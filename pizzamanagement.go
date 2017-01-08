@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	redis "gopkg.in/redis.v5"
 )
 
 const (
@@ -17,18 +18,20 @@ func main() {
 
 	router := httprouter.New()
 
-	// TODO rest api for this service
-	// TODO callers to other services
+	router.GET("/rest/pizzas", GetRestPizzas)
+	router.POST("/rest/pizzas", PostRestPizzas)
 
-	// get pizzas
-	// get pizzas/id
-	// get pizzas/id/ingredients
-	// post pizzas
-	// post pizzas/id/ingredients
-	// delete pizzas/id
-	// delete pizzas/id/ingredients/id
-	// put pizzas/id
-	// put pizzas/id/ingredients/id
+	router.GET("/rest/pizzas/:pid", GetRestPizzasPid)
+	router.DELETE("/rest/pizzas/:pid", DeleteRestPizzasPid)
+
+	router.GET("/rest/pizzas/:pid/ingredients", GetRestPizzasPidIngredients)
+	router.POST("/rest/pizzas/:pid/ingredients", PostRestPizzasPidIngredients)
+	router.PUT("/rest/pizzas/:pid", PutRestPizzasPid)
+
+	router.PUT("/rest/pizzas/:pid/ingredients/:iid", PutRestPizzasPidIngredientsIid)
+	router.DELETE("/rest/pizzas/:pid/ingredients/:iid", DeleteRestPizzasPidIngredientsIid)
+
+	// TODO storage
 
 	err := http.ListenAndServe(fmt.Sprintf(":%d", DEFAULT_PORT), router)
 	if err != nil {
