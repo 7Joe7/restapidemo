@@ -7,6 +7,9 @@ import (
 
 /*
  Returns a list of pizzas in JSON format
+
+ JSON format:
+ ["id":{"name":"","ingredients":[]}]
  */
 func GetRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	getRestPizzas(w, r, params)
@@ -32,7 +35,7 @@ func GetRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
 /*
  Returns a list of ingredients of a pizza specified by its id
  */
-func GetRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func GetRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	getRestPizzasPidIngredients(w, r, params)
 }
 
@@ -42,7 +45,7 @@ func GetRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params 
  Accepts JSON:
  {"name":""}
  */
-func PostRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func PostRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	postRestPizzasPidIngredients(w, r, params)
 }
 
@@ -56,7 +59,7 @@ func DeleteRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprout
 /*
  Deletes an ingredient from a pizza specified by pizza id and ingredient id
  */
-func DeleteRestPizzasPidIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func DeleteRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	deleteRestPizzasPidIngredientsIid(w, r, params)
 }
 
@@ -76,7 +79,7 @@ func PutRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
  Accepts JSON:
  {"name":""}
  */
-func PutRestPizzasPidIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func PutRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	putRestPizzasPidIngredientsIid(w, r, params)
 }
 

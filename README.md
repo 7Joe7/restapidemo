@@ -14,3 +14,8 @@ a JSON value with all ingredients.
 I have divided code into multiple packages rest package with rest api and 
 for now also logic (could be separated if it would get bigger). Db package 
 for decoupling of used db and the rest of the code.
+
+After some thinking I realized that ingredients shouldn't be a sub-resources as 
+they are not unique to each pizza. This could be solved multiple ways 
+(third resource unique to a pizza which would contain amount of ingredient and its id). 
+I think for now separation is cleanest.

@@ -9,17 +9,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/7joe7/pizzamanagement/rest"
 	"github.com/7joe7/pizzamanagement/db"
-)
-
-const (
-	DEFAULT_PORT = 49494
-	REDIS_PORT   = 6379
-	REDIS_HOST   = "localhost"
+	"github.com/7joe7/pizzamanagement/resources"
 )
 
 func init() {
-	log.Printf("Starting pizza management microservice on port %d.", DEFAULT_PORT)
-	redisAddress := fmt.Sprintf("%s:%d", REDIS_HOST, REDIS_PORT)
+	log.Printf("Starting pizza management microservice on port %d.", resources.DEFAULT_PORT)
+	redisAddress := fmt.Sprintf("%s:%d", resources.REDIS_HOST, resources.REDIS_PORT)
 	err := db.SetupConnection(redisAddress)
 	if err != nil {
 		log.Printf("Connection to database failed. %v", err)
@@ -37,15 +32,16 @@ func main() {
 
 	router.GET("/rest/pizzas/:pid", rest.LogRequest(rest.GetRestPizzasPid))
 	router.DELETE("/rest/pizzas/:pid", rest.LogRequest(rest.DeleteRestPizzasPid))
-
-	router.GET("/rest/pizzas/:pid/ingredients", rest.LogRequest(rest.GetRestPizzasPidIngredients))
-	router.POST("/rest/pizzas/:pid/ingredients", rest.LogRequest(rest.PostRestPizzasPidIngredients))
 	router.PUT("/rest/pizzas/:pid", rest.LogRequest(rest.PutRestPizzasPid))
 
-	router.PUT("/rest/pizzas/:pid/ingredients/:iid", rest.LogRequest(rest.PutRestPizzasPidIngredientsIid))
-	router.DELETE("/rest/pizzas/:pid/ingredients/:iid", rest.LogRequest(rest.DeleteRestPizzasPidIngredientsIid))
+	router.GET("/rest/ingredients", rest.LogRequest(rest.GetRestIngredients))
+	router.POST("/rest/ingredients", rest.LogRequest(rest.PostRestIngredients))
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", DEFAULT_PORT), router)
+	router.GET("/rest/ingredients/:iid", rest.LogRequest(rest.GetRestIngredientsIid))
+	router.PUT("/rest/ingredients/:iid", rest.LogRequest(rest.PutRestIngredientsIid))
+	router.DELETE("/rest/ingredients/:iid", rest.LogRequest(rest.DeleteRestIngredientsIid))
+
+	err := http.ListenAndServe(fmt.Sprintf(":%d", resources.DEFAULT_PORT), router)
 	if err != nil {
 		log.Fatalf("ListenAndServe failed. %v", err)
 	}
