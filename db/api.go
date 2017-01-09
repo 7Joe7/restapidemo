@@ -72,11 +72,11 @@ func Delete(key, id string) {
 func GetById(key, id string) (string, error) {
 	getCmd := redisClient.HGet(key, id)
 	if getCmd.Err() != nil {
-		return nil, getCmd.Err()
+		return "", getCmd.Err()
 	}
 	result, err := getCmd.Result()
 	if err != nil {
-		return nil, fmt.Errorf("Get failed with error: %v and message: %s.", getCmd.Err(), getCmd.String())
+		return "", fmt.Errorf("Get failed with error: %v and message: %s.", getCmd.Err(), getCmd.String())
 	}
 	return result, nil
 }

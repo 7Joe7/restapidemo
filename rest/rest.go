@@ -17,9 +17,14 @@ func getRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Par
 	pizzas, err := db.GetAll(resources.DB_KEY_PIZZAS)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Database request failed. %v", err), 500)
+		return
 	}
-	w.Write()
-	// TODO get pizzas from redis
+	pizzasJson, err := json.Marshal(pizzas)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Database value id invalid. %v", err), 500)
+	}
+	w.Write(pizzasJson)
+	w.WriteHeader(200)
 }
 
 func postRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
@@ -69,6 +74,10 @@ func deleteRestPizzasPidIngredientsIid(w http.ResponseWriter, r *http.Request, p
 }
 
 func putRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+}
+
+func getRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 }
 
