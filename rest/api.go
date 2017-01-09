@@ -1,4 +1,4 @@
-package main
+package rest
 
 import (
 	"net/http"
@@ -78,4 +78,11 @@ func PutRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
  */
 func PutRestPizzasPidIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	putRestPizzasPidIngredientsIid(w, r, params)
+}
+
+/*
+ Logs request parameters
+ */
+func LogRequest(h httprouter.Handle) httprouter.Handle {
+	return logRequest(h)
 }
