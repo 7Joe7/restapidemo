@@ -42,7 +42,7 @@ func add(key string, values map[string]string) (string, error) {
 	}
 	lastIdStr := strconv.Itoa(int(lastId))
 	newKey := fmt.Sprintf("%s:%s", key, lastIdStr)
-	values["Id"] = lastIdStr
+	values["id"] = lastIdStr
 	result := redisClient.HMSet(newKey, values)
 	if result.Err() != nil {
 		return "", result.Err()

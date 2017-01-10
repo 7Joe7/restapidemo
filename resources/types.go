@@ -35,14 +35,16 @@ func (p *Pizza) IsValid() error {
 	if p.Name == "" {
 		return fmt.Errorf("Missing pizza name.")
 	}
-	if len(p.Ingredients) == 0 {
-		return fmt.Errorf("Missing ingredients for pizza.")
-	}
-	for i := 0; i < len(p.Ingredients); i++ {
-		if p.Ingredients[i] == "" {
-			return fmt.Errorf("Missing id of assigned ingredient.")
-		}
-	}
+	// Does not seem useful
+	//if len(p.Ingredients) == 0 {
+	//	return fmt.Errorf("Missing ingredients for pizza.")
+	//}
+	//for i := 0; i < len(p.Ingredients); i++ {
+	//	if p.Ingredients[i] == "" {
+	//		return fmt.Errorf("Missing id of assigned ingredient.")
+	//	}
+	//}
+	//return nil
 	return nil
 }
 
@@ -64,13 +66,13 @@ func (iop *IngredientOnPizza) IsValid() error {
 }
 
 func (p *Pizza) ToMap() map[string]string {
-	return map[string]string{"Name": p.Name, "Id": p.Id}
+	return map[string]string{"name": p.Name, "id": p.Id}
 }
 
 func (i *Ingredient) ToMap() map[string]string {
-	return map[string]string{"Name": i.Name, "Id": i.Id}
+	return map[string]string{"name": i.Name, "id": i.Id}
 }
 
 func (iop *IngredientOnPizza) ToMap() map[string]string {
-	return map[string]string{"PizzaId": iop.PizzaId, "Id": iop.Id, "IngredientId": iop.IngredientId}
+	return map[string]string{"pizzaId": iop.PizzaId, "id": iop.Id, "ingredientId": iop.IngredientId}
 }

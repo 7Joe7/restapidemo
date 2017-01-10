@@ -101,7 +101,7 @@ func GetRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params 
  Creates ingredient on a pizza specified by id
 
  Accepts JSON:
- {"IngredientId":""}
+ {"ingredientId":""}
  */
 func PostRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	postRestPizzasPidIngredients(w, r, params)
