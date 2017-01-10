@@ -31,35 +31,35 @@ func setupConnection(redisAddress string) error {
 	return err
 }
 
-func add(key string, values map[string]string) error {
+func add(key string, values map[string]string) (string, error) {
 	idCmd := redisClient.Incr(fmt.Sprintf("%ss:lastid", key))
 	if idCmd.Err() != nil {
-		return idCmd.Err()
+		return "", idCmd.Err()
 	}
 	lastId, err := idCmd.Result()
 	if err != nil {
-		return err
+		return "", err
 	}
 	lastIdStr := strconv.Itoa(int(lastId))
 	newKey := fmt.Sprintf("%s:%s", key, lastIdStr)
 	values["Id"] = lastIdStr
 	result := redisClient.HMSet(newKey, values)
 	if result.Err() != nil {
-		return result.Err()
+		return "", result.Err()
 	}
 	_, err = result.Result()
 	if err != nil {
-		return err
+		return "", err
 	}
 	saddCmd := redisClient.SAdd(fmt.Sprintf("%ss", key), newKey)
 	if saddCmd.Err() != nil {
-		return saddCmd.Err()
+		return lastIdStr, saddCmd.Err()
 	}
 	_, err = saddCmd.Result()
 	if err != nil {
-		return err
+		return lastIdStr, err
 	}
-	return nil
+	return lastIdStr, nil
 }
 
 func getAll(key string) ([]map[string]string, error) {
@@ -137,6 +137,11 @@ func updateEntity(key, id string, values map[string]string) error {
 		return err
 	}
 	return nil
+}
+
+func entityExists(key, id string) (bool, error) {
+	entityKey := fmt.Sprintf("%s:%s", key, id)
+	return keyExists(entityKey)
 }
 
 func keyExists(key string) (bool, error) {

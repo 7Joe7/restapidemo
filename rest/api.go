@@ -91,6 +91,30 @@ func PutRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httpro
 }
 
 /*
+ Returns all ingredients on a pizza specified by id
+ */
+func GetRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	getRestPizzasPidIngredients(w, r, params)
+}
+
+/*
+ Creates ingredient on a pizza specified by id
+
+ Accepts JSON:
+ {"IngredientId":""}
+ */
+func PostRestPizzasPidIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	postRestPizzasPidIngredients(w, r, params)
+}
+
+/*
+ Deletes ingredient on a pizza specified by pizza id and relationship id
+ */
+func DeleteRestPizzasPidIngredientsIopid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	deleteRestPizzasPidIngredientsIopid(w, r, params)
+}
+
+/*
  Logs request parameters
  */
 func LogRequest(h httprouter.Handle) httprouter.Handle {

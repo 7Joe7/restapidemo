@@ -1,11 +1,13 @@
 package rest
 
 import (
-	"github.com/julienschmidt/httprouter"
-	"io/ioutil"
-	"net/http"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"log"
+
+	"github.com/julienschmidt/httprouter"
 	"github.com/7joe7/pizzamanagement/resources"
 	"github.com/7joe7/pizzamanagement/db"
 )
@@ -13,27 +15,28 @@ import (
 func postRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "Request body is invalid.", 400)
+		http.Error(w, "Request body is invalid.", 403)
 		return
 	}
 	defer r.Body.Close()
 	in := resources.NewIngredient()
 	err = json.Unmarshal(body, in)
 	if err != nil {
-		http.Error(w, "Request body is not a valid JSON.", 400)
+		http.Error(w, "Request body is not a valid JSON.", 403)
 		return
 	}
 	err = in.IsValid()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Ingredient is invalid. %v", err), 400)
+		http.Error(w, fmt.Sprintf("Ingredient is invalid. %v", err), 403)
 		return
 	}
-	err = db.AddEntity(resources.DB_KEY_INGREDIENTS, in.ToMap())
+	id, err := db.AddEntity(resources.DB_KEY_INGREDIENTS, in.ToMap())
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Database request failed. %v", err), 500)
 		return
 	}
 	w.WriteHeader(201)
+	log.Printf("Created ingredient with id '%s'.", id)
 }
 
 func getRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
@@ -86,25 +89,26 @@ func deleteRestIngredientsIid(w http.ResponseWriter, r *http.Request, params htt
 		return
 	}
 	w.WriteHeader(200)
+	log.Printf("Deleted ingredient with id '%s'.", iid)
 }
 
 func putRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	iid := params.ByName("iid")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "Request body is invalid.", 400)
+		http.Error(w, "Request body is invalid.", 403)
 		return
 	}
 	defer r.Body.Close()
 	in := resources.NewIngredient()
 	err = json.Unmarshal(body, in)
 	if err != nil {
-		http.Error(w, "Request body is not a valid JSON.", 400)
+		http.Error(w, "Request body is not a valid JSON.", 403)
 		return
 	}
 	err = in.IsValid()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Ingredient is invalid. %v", err), 400)
+		http.Error(w, fmt.Sprintf("Ingredient is invalid. %v", err), 403)
 		return
 	}
 	err = db.UpdateEntity(resources.DB_KEY_INGREDIENTS, iid, in.ToMap())
@@ -112,4 +116,5 @@ func putRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httpro
 		http.Error(w, fmt.Sprintf("Database request to update ingredient with id '%s' failed.", iid), 500)
 		return
 	}
+	log.Printf("Updated ingredient with id '%s'.", iid)
 }

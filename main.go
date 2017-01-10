@@ -34,6 +34,11 @@ func main() {
 	router.DELETE("/rest/pizzas/:pid", rest.LogRequest(rest.DeleteRestPizzasPid))
 	router.PUT("/rest/pizzas/:pid", rest.LogRequest(rest.PutRestPizzasPid))
 
+	router.GET("/rest/pizzas/:pid/ingredients", rest.LogRequest(rest.GetRestPizzasPidIngredients))
+	router.POST("/rest/pizzas/:pid/ingredients", rest.LogRequest(rest.PostRestPizzasPidIngredients))
+
+	router.DELETE("/rest/pizzas/:pid/ingredients/:iopid", rest.LogRequest(rest.DeleteRestPizzasPidIngredientsIopid))
+
 	router.GET("/rest/ingredients", rest.LogRequest(rest.GetRestIngredients))
 	router.POST("/rest/ingredients", rest.LogRequest(rest.PostRestIngredients))
 

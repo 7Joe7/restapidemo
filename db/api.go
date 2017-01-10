@@ -4,7 +4,7 @@ func SetupConnection(redisAddress string) error {
 	return setupConnection(redisAddress)
 }
 
-func AddEntity(key string, values map[string]string) error {
+func AddEntity(key string, values map[string]string) (string, error) {
 	return add(key, values)
 }
 
@@ -22,4 +22,8 @@ func GetEntityById(key, id string) (map[string]string, error) {
 
 func UpdateEntity(key, id string, values map[string]string) error {
 	return updateEntity(key, id, values)
+}
+
+func EntityExists(key, id string) (bool, error) {
+	return entityExists(key, id)
 }
