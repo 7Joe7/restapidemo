@@ -19,7 +19,7 @@ func GetRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Par
  Adds a new pizza
 
  Accepts JSON:
- {"name":"","ingredients":[{"name":""},...]}
+ {"name":"","ingredients":["id1", "id2"]}
  */
 func PostRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	postRestPizzas(w, r, params)
@@ -37,6 +37,13 @@ func GetRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
  */
 func GetRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	getRestIngredients(w, r, params)
+}
+
+/*
+ Returns information about ingredient specified by id
+ */
+func GetRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	getRestIngredientsIid(w, r, params)
 }
 
 /*
@@ -80,7 +87,7 @@ func PutRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
  {"name":""}
  */
 func PutRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	putRestPizzasPidIngredientsIid(w, r, params)
+	putRestIngredientsIid(w, r, params)
 }
 
 /*

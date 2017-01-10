@@ -106,29 +106,37 @@ func deleteEntity(key, id string) (bool, error) {
 	return int(result) == 1, nil
 }
 
-func getEntityById(key, id string) (string, error) {
-	//redisClient.HExists(key, id) tODO
-	getCmd := redisClient.HGet(key, id)
+func getEntityById(key, id string) (map[string]string, error) {
+	entityKey := fmt.Sprintf("%s:%s", key, id)
+	exists, err := keyExists(entityKey)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, nil
+	}
+	getCmd := redisClient.HGetAll(entityKey)
 	if getCmd.Err() != nil {
-		return "", getCmd.Err()
+		return nil, getCmd.Err()
 	}
 	result, err := getCmd.Result()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return result, nil
 }
 
-func updateEntity(key, id, value string) (bool, error) {
-	setCmd := redisClient.HSet(key, id, value)
-	if setCmd.Err() != nil {
-		return false, setCmd.Err()
+func updateEntity(key, id string, values map[string]string) error {
+	entityKey := fmt.Sprintf("%s:%s", key, id)
+	result := redisClient.HMSet(entityKey, values)
+	if result.Err() != nil {
+		return result.Err()
 	}
-	result, err := setCmd.Result()
+	_, err := result.Result()
 	if err != nil {
-		return false, err
+		return err
 	}
-	return result, nil
+	return nil
 }
 
 func keyExists(key string) (bool, error) {

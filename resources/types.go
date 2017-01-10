@@ -36,17 +36,17 @@ func (p *Pizza) IsValid() error {
 	return nil
 }
 
+func (in *Ingredient) IsValid() error {
+	if in.Name == "" {
+		return fmt.Errorf("Missing ingredient name.")
+	}
+	return nil
+}
+
 func (p *Pizza) ToMap() map[string]string {
 	return map[string]string{"Name":p.Name, "Id": p.Id}
 }
 
 func (i *Ingredient) ToMap() map[string]string {
 	return map[string]string{"Name":i.Name, "Id": i.Id}
-}
-
-func (in *Ingredient) IsValid() error {
-	if in.Name == "" {
-		return fmt.Errorf("Missing ingredient name.")
-	}
-	return nil
 }
