@@ -30,9 +30,9 @@ func main() {
 	router.GET("/rest/pizzas", rest.LogRequest(rest.GetRestPizzas))
 	router.POST("/rest/pizzas", rest.LogRequest(rest.PostRestPizzas))
 
-	//router.GET("/rest/pizzas/:pid", rest.LogRequest(rest.GetRestPizzasPid))
-	//router.DELETE("/rest/pizzas/:pid", rest.LogRequest(rest.DeleteRestPizzasPid))
-	//router.PUT("/rest/pizzas/:pid", rest.LogRequest(rest.PutRestPizzasPid))
+	router.GET("/rest/pizzas/:pid", rest.LogRequest(rest.GetRestPizzasPid))
+	router.DELETE("/rest/pizzas/:pid", rest.LogRequest(rest.DeleteRestPizzasPid))
+	router.PUT("/rest/pizzas/:pid", rest.LogRequest(rest.PutRestPizzasPid))
 
 	router.GET("/rest/ingredients", rest.LogRequest(rest.GetRestIngredients))
 	router.POST("/rest/ingredients", rest.LogRequest(rest.PostRestIngredients))
