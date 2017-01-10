@@ -2,16 +2,26 @@ package resources
 
 import "fmt"
 
-type pizza struct {
-	Name string
-	Ingredients []string
+type Pizza struct {
+	Name        string
+	Ingredients []string `json:",omitempty"`
+	Id          string   `json:",omitempty"`
 }
 
-func NewPizza() *pizza {
-	return &pizza{Name:"", Ingredients:[]string{}}
+type Ingredient struct {
+	Name   string
+	Id     string   `json:",omitempty"`
 }
 
-func (p *pizza) IsValid() error {
+func NewPizza() *Pizza {
+	return &Pizza{Name: "", Ingredients: []string{}}
+}
+
+func NewIngredient() *Ingredient {
+	return &Ingredient{Name: ""}
+}
+
+func (p *Pizza) IsValid() error {
 	if p.Name == "" {
 		return fmt.Errorf("Missing pizza name.")
 	}
@@ -20,8 +30,23 @@ func (p *pizza) IsValid() error {
 	}
 	for i := 0; i < len(p.Ingredients); i++ {
 		if p.Ingredients[i] == "" {
-
+			return fmt.Errorf("Missing id of assigned ingredient.")
 		}
+	}
+	return nil
+}
+
+func (p *Pizza) ToMap() map[string]string {
+	return map[string]string{"Name":p.Name, "Id": p.Id}
+}
+
+func (i *Ingredient) ToMap() map[string]string {
+	return map[string]string{"Name":i.Name, "Id": i.Id}
+}
+
+func (in *Ingredient) IsValid() error {
+	if in.Name == "" {
+		return fmt.Errorf("Missing ingredient name.")
 	}
 	return nil
 }

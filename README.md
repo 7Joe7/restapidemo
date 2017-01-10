@@ -17,5 +17,9 @@ for decoupling of used db and the rest of the code.
 
 After some thinking I realized that ingredients shouldn't be a sub-resources as 
 they are not unique to each pizza. This could be solved multiple ways 
-(third resource unique to a pizza which would contain amount of ingredient and its id). 
+(third resource unique to a pizza which would contain amount of an ingredient and its id). 
 I think for now separation is cleanest.
+
+After some research of redis I decided to rearrange db structure according 
+to its conventions. I am not sure about the lastid. I would be interested 
+in knowing how to do that better.

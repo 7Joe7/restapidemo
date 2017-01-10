@@ -5,5 +5,6 @@ const (
 	REDIS_PORT   = 6379
 	REDIS_HOST   = "localhost"
 
-	DB_KEY_PIZZAS = "pizzas"
+	DB_KEY_PIZZAS = "pizza"
+	DB_KEY_INGREDIENTS = "ingredient"
 )
