@@ -1,5 +1,13 @@
 Pizza management microservice
 
+Depends on running redis on port 6379.
+
+Packages:
+
+"db" with responsibility for connecting to db and all db operations.
+"resources" for common constants and types
+"rest" for rest api itself
+
 About the implementation. I hesitated over storage options. 
 Now I am practically decided to try redis with persistence setting. 
 It is an overkill here but at least I will see how it works.
