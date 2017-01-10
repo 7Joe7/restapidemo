@@ -16,13 +16,13 @@ func postRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 		http.Error(w, "Request body is invalid.", 400)
 		return
 	}
+	defer r.Body.Close()
 	p := resources.NewPizza()
 	err = json.Unmarshal(body, p)
 	if err != nil {
 		http.Error(w, "Request body is not a valid JSON.", 400)
 		return
 	}
-	defer r.Body.Close()
 	err = p.IsValid()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Pizza is invalid. %v", err), 400)
@@ -39,12 +39,12 @@ func postRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 func getRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	pizzas, err := db.GetAllEntities(resources.DB_KEY_PIZZAS)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Database request failed. %v", err), 500)
+		http.Error(w, fmt.Sprintf("Database request to retrieve all pizzas failed. %v", err), 500)
 		return
 	}
 	pizzasJson, err := json.Marshal(pizzas)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Database value id invalid. %v", err), 500)
+		http.Error(w, fmt.Sprintf("Database value of pizzas altogether is invalid. %v", err), 500)
 		return
 	}
 	_, err = w.Write(pizzasJson)
@@ -56,24 +56,22 @@ func getRestPizzas(w http.ResponseWriter, r *http.Request, params httprouter.Par
 }
 
 func getRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	//pid := params.ByName("pid")
-	//pizza, err := db.GetEntityById(resources.DB_KEY_PIZZAS, pid)
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Database request for pizza with id '%s' failed. %v", pid, err), 500)
-	//	return
-	//}
-	//p := resources.NewPizza()
-	//err = json.Unmarshal([]byte(pizza), p)
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Database value is invalid. %v", err), 500)
-	//	return
-	//}
-	//_, err = w.Write([]byte(pizza))
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Unable to write response. %v", err), 500)
-	//	return
-	//}
-	//w.WriteHeader(200)
+	pid := params.ByName("pid")
+	result, err := db.GetEntityById(resources.DB_KEY_PIZZAS, pid)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Database request to get pizza with id '%s' failed. %v", pid, err), 500)
+		return
+	}
+	pizzaJson, err := json.Marshal(result)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Database value of pizza with '%s' is invalid. %v", pid, err), 500)
+		return
+	}
+	_, err = w.Write(pizzaJson)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Writing response failed. %v", err), 500)
+	}
+	w.WriteHeader(200)
 }
 
 func deleteRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
@@ -90,28 +88,27 @@ func deleteRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprout
 }
 
 func putRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	//pid := params.ByName("pid")
-	//body, err := ioutil.ReadAll(r.Body)
-	//if err != nil {
-	//	http.Error(w, "Request body is invalid.", 400)
-	//	return
-	//}
-	//p := resources.NewPizza()
-	//err = json.Unmarshal(body, p)
-	//if err != nil {
-	//	http.Error(w, "Request body is not a valid JSON.", 400)
-	//	return
-	//}
-	//defer r.Body.Close()
-	//err = p.IsValid()
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Pizza is invalid. %v", err), 400)
-	//	return
-	//}
-	//result, err := db.UpdateEntity(resources.DB_KEY_PIZZAS, pid, body)
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Database request to modify pizza with id "))
-	//	return
-	//}
-	//
+	pid := params.ByName("pid")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Request body is invalid.", 400)
+		return
+	}
+	defer r.Body.Close()
+	p := resources.NewPizza()
+	err = json.Unmarshal(body, p)
+	if err != nil {
+		http.Error(w, "Request body is not a valid JSON.", 400)
+		return
+	}
+	err = p.IsValid()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Pizza is invalid. %v", err), 400)
+		return
+	}
+	err = db.UpdateEntity(resources.DB_KEY_PIZZAS, pid, body)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Database request to update pizza with id '%s' failed.", pid), 500)
+		return
+	}
 }

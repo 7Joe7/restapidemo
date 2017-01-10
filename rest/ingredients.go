@@ -12,11 +12,11 @@ import (
 
 func postRestIngredients(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	body, err := ioutil.ReadAll(r.Body)
-	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, "Request body is invalid.", 400)
 		return
 	}
+	defer r.Body.Close()
 	in := resources.NewIngredient()
 	err = json.Unmarshal(body, in)
 	if err != nil {
@@ -82,7 +82,7 @@ func deleteRestIngredientsIid(w http.ResponseWriter, r *http.Request, params htt
 		return
 	}
 	if !result {
-		http.Error(w, fmt.Sprintf("Ingredient was not deleted. %v", err), 403)
+		http.Error(w, fmt.Sprintf("Ingredient with id '%s' was not deleted. %v", iid, err), 403)
 		return
 	}
 	w.WriteHeader(200)

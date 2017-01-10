@@ -25,14 +25,14 @@ func (p *Pizza) IsValid() error {
 	if p.Name == "" {
 		return fmt.Errorf("Missing pizza name.")
 	}
-	if len(p.Ingredients) == 0 {
-		return fmt.Errorf("Missing ingredients for pizza.")
-	}
-	for i := 0; i < len(p.Ingredients); i++ {
-		if p.Ingredients[i] == "" {
-			return fmt.Errorf("Missing id of assigned ingredient.")
-		}
-	}
+	//if len(p.Ingredients) == 0 {
+	//	return fmt.Errorf("Missing ingredients for pizza.")
+	//}
+	//for i := 0; i < len(p.Ingredients); i++ {
+	//	if p.Ingredients[i] == "" {
+	//		return fmt.Errorf("Missing id of assigned ingredient.")
+	//	}
+	//}
 	return nil
 }
 
