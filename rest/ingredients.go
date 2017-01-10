@@ -168,6 +168,7 @@ func putRestIngredientsIid(w http.ResponseWriter, r *http.Request, params httpro
 		http.Error(w, msg, 400)
 		return
 	}
+	in.Id = iid
 	err = db.UpdateEntity(resources.DB_KEY_INGREDIENTS, iid, in.ToMap())
 	if err != nil {
 		msg := fmt.Sprintf("Database request to update ingredient with id '%s' failed.", iid)

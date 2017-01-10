@@ -181,6 +181,7 @@ func putRestPizzasPid(w http.ResponseWriter, r *http.Request, params httprouter.
 			return
 		}
 	}
+	p.Id = pid
 	err = db.UpdateEntity(resources.DB_KEY_PIZZAS, pid, p.ToMap())
 	if err != nil {
 		msg := fmt.Sprintf("Database request to update pizza with id '%s' failed.", pid)
